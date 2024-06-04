@@ -50,6 +50,23 @@
       "maxLength": 100
     },
     "documents": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "author": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::author.author",
+      "inversedBy": "articles"
+    },
+    "backgroundImage": {
       "allowedTypes": [
         "images",
         "files",
@@ -57,13 +74,11 @@
         "audios"
       ],
       "type": "media",
-      "multiple": true
+      "multiple": false
     },
-    "author": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::author.author",
-      "inversedBy": "articles"
+    "pubblicationDate": {
+      "type": "date",
+      "required": true
     }
   }
 }
