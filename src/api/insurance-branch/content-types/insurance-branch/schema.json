@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "insurance_branches",
+  "info": {
+    "singularName": "insurance-branch",
+    "pluralName": "insurance-branches",
+    "displayName": "InsuranceBranch"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "code": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "documents": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::document.document",
+      "mappedBy": "insurance_branches"
+    }
+  }
+}

@@ -512,6 +512,12 @@ export interface PluginContentReleasesRelease extends Schema.CollectionType {
   attributes: {
     name: Attribute.String & Attribute.Required;
     releasedAt: Attribute.DateTime;
+    scheduledAt: Attribute.DateTime;
+    timezone: Attribute.String;
+    status: Attribute.Enumeration<
+      ['ready', 'blocked', 'failed', 'done', 'empty']
+    > &
+      Attribute.Required;
     actions: Attribute.Relation<
       'plugin::content-releases.release',
       'oneToMany',
@@ -566,6 +572,7 @@ export interface PluginContentReleasesReleaseAction
       'manyToOne',
       'plugin::content-releases.release'
     >;
+    isEntryValid: Attribute.Boolean;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -938,6 +945,48 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
   };
 }
 
+export interface ApiDocumentDocument extends Schema.CollectionType {
+  collectionName: 'documents';
+  info: {
+    singularName: 'document';
+    pluralName: 'documents';
+    displayName: 'Document';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    description: Attribute.Text;
+    file: Attribute.Media;
+    insurance_securities: Attribute.Relation<
+      'api::document.document',
+      'manyToMany',
+      'api::insurance-security.insurance-security'
+    >;
+    insurance_branches: Attribute.Relation<
+      'api::document.document',
+      'manyToMany',
+      'api::insurance-branch.insurance-branch'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::document.document',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::document.document',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiGlobalGlobal extends Schema.SingleType {
   collectionName: 'globals';
   info: {
@@ -971,6 +1020,80 @@ export interface ApiGlobalGlobal extends Schema.SingleType {
   };
 }
 
+export interface ApiInsuranceBranchInsuranceBranch
+  extends Schema.CollectionType {
+  collectionName: 'insurance_branches';
+  info: {
+    singularName: 'insurance-branch';
+    pluralName: 'insurance-branches';
+    displayName: 'InsuranceBranch';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String & Attribute.Required;
+    code: Attribute.String & Attribute.Required & Attribute.Unique;
+    documents: Attribute.Relation<
+      'api::insurance-branch.insurance-branch',
+      'manyToMany',
+      'api::document.document'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::insurance-branch.insurance-branch',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::insurance-branch.insurance-branch',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiInsuranceSecurityInsuranceSecurity
+  extends Schema.CollectionType {
+  collectionName: 'insurance_securities';
+  info: {
+    singularName: 'insurance-security';
+    pluralName: 'insurance-securities';
+    displayName: 'InsuranceSecurity';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String & Attribute.Required;
+    code: Attribute.String & Attribute.Required & Attribute.Unique;
+    documents: Attribute.Relation<
+      'api::insurance-security.insurance-security',
+      'manyToMany',
+      'api::document.document'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::insurance-security.insurance-security',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::insurance-security.insurance-security',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 declare module '@strapi/types' {
   export module Shared {
     export interface ContentTypes {
@@ -993,7 +1116,10 @@ declare module '@strapi/types' {
       'api::article.article': ApiArticleArticle;
       'api::author.author': ApiAuthorAuthor;
       'api::category.category': ApiCategoryCategory;
+      'api::document.document': ApiDocumentDocument;
       'api::global.global': ApiGlobalGlobal;
+      'api::insurance-branch.insurance-branch': ApiInsuranceBranchInsuranceBranch;
+      'api::insurance-security.insurance-security': ApiInsuranceSecurityInsuranceSecurity;
     }
   }
 }

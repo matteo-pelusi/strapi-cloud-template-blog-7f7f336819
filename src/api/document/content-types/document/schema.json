@@ -1,0 +1,42 @@
+{
+  "kind": "collectionType",
+  "collectionName": "documents",
+  "info": {
+    "singularName": "document",
+    "pluralName": "documents",
+    "displayName": "Document",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "description": {
+      "type": "text"
+    },
+    "file": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "insurance_securities": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::insurance-security.insurance-security",
+      "inversedBy": "documents"
+    },
+    "insurance_branches": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::insurance-branch.insurance-branch",
+      "inversedBy": "documents"
+    }
+  }
+}
