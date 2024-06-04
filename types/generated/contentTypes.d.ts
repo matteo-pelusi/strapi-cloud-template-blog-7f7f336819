@@ -844,16 +844,16 @@ export interface ApiArticleArticle extends Schema.CollectionType {
       'manyToMany',
       'api::category.category'
     >;
-    authors: Attribute.Relation<
-      'api::article.article',
-      'manyToMany',
-      'api::author.author'
-    >;
     description: Attribute.Text &
       Attribute.SetMinMaxLength<{
         maxLength: 100;
       }>;
     documents: Attribute.Media;
+    author: Attribute.Relation<
+      'api::article.article',
+      'manyToOne',
+      'api::author.author'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -888,7 +888,7 @@ export interface ApiAuthorAuthor extends Schema.CollectionType {
     avatar: Attribute.Media;
     articles: Attribute.Relation<
       'api::author.author',
-      'manyToMany',
+      'oneToMany',
       'api::article.article'
     >;
     createdAt: Attribute.DateTime;

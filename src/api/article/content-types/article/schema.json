@@ -45,12 +45,6 @@
       "target": "api::category.category",
       "inversedBy": "articles"
     },
-    "authors": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::author.author",
-      "inversedBy": "articles"
-    },
     "description": {
       "type": "text",
       "maxLength": 100
@@ -64,6 +58,12 @@
       ],
       "type": "media",
       "multiple": true
+    },
+    "author": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::author.author",
+      "inversedBy": "articles"
     }
   }
 }
