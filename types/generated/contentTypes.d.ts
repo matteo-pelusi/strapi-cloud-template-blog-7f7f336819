@@ -833,26 +833,27 @@ export interface ApiArticleArticle extends Schema.CollectionType {
     draftAndPublish: true;
   };
   attributes: {
-    title: Attribute.String;
-    description: Attribute.Text &
-      Attribute.SetMinMaxLength<{
-        maxLength: 80;
-      }>;
-    slug: Attribute.UID<'api::article.article', 'title'>;
+    title: Attribute.String & Attribute.Required;
+    content: Attribute.Text & Attribute.Required;
     cover: Attribute.Media;
-    author: Attribute.Relation<
-      'api::article.article',
-      'manyToOne',
-      'api::author.author'
-    >;
-    category: Attribute.Relation<
-      'api::article.article',
-      'manyToOne',
-      'api::category.category'
-    >;
     blocks: Attribute.DynamicZone<
       ['shared.media', 'shared.quote', 'shared.rich-text', 'shared.slider']
     >;
+    categories: Attribute.Relation<
+      'api::article.article',
+      'manyToMany',
+      'api::category.category'
+    >;
+    authors: Attribute.Relation<
+      'api::article.article',
+      'manyToMany',
+      'api::author.author'
+    >;
+    description: Attribute.Text &
+      Attribute.SetMinMaxLength<{
+        maxLength: 100;
+      }>;
+    documents: Attribute.Media;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -883,12 +884,11 @@ export interface ApiAuthorAuthor extends Schema.CollectionType {
     draftAndPublish: false;
   };
   attributes: {
-    name: Attribute.String;
+    name: Attribute.String & Attribute.Required;
     avatar: Attribute.Media;
-    email: Attribute.String;
     articles: Attribute.Relation<
       'api::author.author',
-      'oneToMany',
+      'manyToMany',
       'api::article.article'
     >;
     createdAt: Attribute.DateTime;
@@ -920,11 +920,10 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
     draftAndPublish: false;
   };
   attributes: {
-    name: Attribute.String;
-    slug: Attribute.UID;
+    name: Attribute.String & Attribute.Required;
     articles: Attribute.Relation<
       'api::category.category',
-      'oneToMany',
+      'manyToMany',
       'api::article.article'
     >;
     description: Attribute.Text;

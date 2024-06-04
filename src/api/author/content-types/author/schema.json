@@ -13,7 +13,8 @@
   "pluginOptions": {},
   "attributes": {
     "name": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "avatar": {
       "type": "media",
@@ -25,14 +26,11 @@
         "videos"
       ]
     },
-    "email": {
-      "type": "string"
-    },
     "articles": {
       "type": "relation",
-      "relation": "oneToMany",
+      "relation": "manyToMany",
       "target": "api::article.article",
-      "mappedBy": "author"
+      "mappedBy": "authors"
     }
   }
 }
